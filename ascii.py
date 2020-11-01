@@ -2,8 +2,11 @@
 #improvements by JezzaProto
 
 from math import sqrt
-import os
-import sys
+import os, sys
+
+width, height = 0,0
+
+brightness = 0
 
 try:
 	from PIL import Image
@@ -17,31 +20,9 @@ except ImportError:
 	except ImportError:
 		print("Failed to install Pillow. Please do this manually.")
 		os._exit(1)
-
-fpath = input("enter file path like an epic gamer:\n")
-
-file = open("output.txt","w")
-
-print("GREET TINGs!")
-
-if os.path.isfile(fpath):
-    try:
-        image = Image.open(fpath)
-        image = image.convert('RGB')
-    except:
-        print("The file specified could not be opened as an image")
-        sys.exit()
-else:
-        print("Error, image does not exist")
-        sys.exit()
-
-width, height = image.size
-
-row = 1
-col = 1
-brightness = 0
-
+        
 def chars():
+    global file
     if brightness < 25:
         file.write("@")
     elif brightness > 25 and brightness <= 50:
@@ -67,13 +48,39 @@ def chars():
     else:
         file.write(" ")
 
-for x in range(1, height//2):
-    while row < width -1:
-            row += 1
-            r, g, b = image.getpixel((row, col))
-            brightness = sqrt(0.241*(r**2) + 0.691*(g**2) + 0.068*(b**2))
-            chars()
-    row = 0
-    col += 2
-    file.write("\n")
-file.close()
+def work():
+    row, col = 1,1
+    global brightness
+    for x in range(1, height//2):
+        while row < width -1:
+                row += 1
+                r, g, b = image.getpixel((row, col))
+                brightness = sqrt(0.241*(r**2) + 0.691*(g**2) + 0.068*(b**2))
+                chars()
+        row = 0
+        col += 2
+        file.write("\n")
+    print("Success! Outputted to output.txt")
+    file.close()
+
+def main(argv):
+    global file, image, width, height
+    print("GREET TINGs!")
+    fpath = input("enter file path like an epic gamer:\n")
+    file = open("output.txt","w")
+
+    if os.path.isfile(fpath):
+        try:
+            image = Image.open(fpath)
+            image = image.convert('RGB')
+        except:
+            print("The file specified could not be opened as an image")
+            sys.exit()
+    else:
+            print("Error, image does not exist")
+            sys.exit()
+    width, height = image.size
+    work()
+
+if __name__ == "__main__":
+   main(sys.argv[1:])
