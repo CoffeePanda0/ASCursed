@@ -12,3 +12,7 @@ this was written in less than 2 hours and is a mess
 - Python 3.4 or higher
 - PIL
 - A stable mental state
+
+# Usage
+- Edit the variable fpath and set it to file path
+- If you do a large image sit back and get a cuppa because it takes a long time
