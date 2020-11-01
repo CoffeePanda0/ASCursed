@@ -3,6 +3,8 @@
 
 from math import sqrt
 import os
+import sys
+
 try:
 	from PIL import Image
 except ImportError:
@@ -28,8 +30,10 @@ if os.path.isfile(fpath):
         image = image.convert('RGB')
     except:
         print("The file specified could not be opened as an image")
+        sys.exit()
 else:
         print("Error, image does not exist")
+        sys.exit()
 
 width, height = image.size
 
