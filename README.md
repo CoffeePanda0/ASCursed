@@ -14,5 +14,5 @@ this was written in less than 2 hours and is a mess
 - A stable mental state
 
 # Usage
-- Edit the variable fpath and set it to file path
+- put file name when it ask
 - If you do a large image sit back and get a cuppa because it takes a long time
