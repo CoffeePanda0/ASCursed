@@ -63,10 +63,15 @@ def work():
     print("Success! Outputted to output.txt")
     file.close()
 
-def main(argv):
+def main():
     global file, image, width, height
+
+    try:
+        fpath = sys.argv[1]
+    except:
+        fpath = input("enter file path like an epic gamer:\n")
+
     print("GREET TINGs!")
-    fpath = input("enter file path like an epic gamer:\n")
     file = open("output.txt","w")
 
     if os.path.isfile(fpath):
@@ -83,4 +88,4 @@ def main(argv):
     work()
 
 if __name__ == "__main__":
-   main(sys.argv[1:])
+   main()
