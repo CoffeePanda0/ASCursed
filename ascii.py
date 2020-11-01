@@ -26,16 +26,24 @@ col = 1
 brightness = 0
 
 def chars():
-    if brightness < 50:
-        file.write(".")
-    elif brightness > 50 and brightness <= 100:
-        file.write("o")
-    elif brightness > 100 and brightness <= 150:
-        file.write("O")
-    elif brightness > 150 and brightness <= 200:
+    if brightness < 25:
+        file.write("@")
+    elif brightness > 25 and brightness <= 50:
         file.write("0")
-    elif brightness > 200 and brightness <= 255:
+    elif brightness > 50 and brightness <= 75:
+        file.write("O")
+    elif brightness > 75 and brightness <= 100:
+        file.write("d")
+    elif brightness > 100 and brightness <= 125:
+        file.write("a")
+    elif brightness > 125 and brightness <= 150:
+        file.write("o")
+    elif brightness > 150 and brightness <= 200:
+        file.write(".")
+    elif brightness > 200 and brightness <= 225:
         file.write("*")
+    else:
+        file.write("'")
 
 for x in range (1, height):
     while row < width -1:
