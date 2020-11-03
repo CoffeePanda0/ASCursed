@@ -4,21 +4,24 @@
 import argparse, os, sys
 from math import sqrt
 try:
-	from PIL import Image, ImageEnhance
+        from PIL import Image, ImageEnhance
 except ImportError:
-	print("Pillow needs to be installed to run this program.\nAttempting to install from pip.")
-	os.system("pip install pillow")
-	os.system("python -m pip install pillow")
-	os.system("py -m pip install pillow")
-	try:
-		from PIL import Image
-	except ImportError:
-		print("Failed to install Pillow. Please do this manually.")
-		os._exit(1)
+        print("Pillow needs to be installed to run this program.")
+        i = input("Would you like to try and install pillow? (y/n)")
+        if i.lower() == "y" or i.lower() == "yes":
+                os.system("pip install pillow")
+                os.system("python -m pip install pillow")
+                os.system("py -m pip install pillow")
+                try:
+                        from PIL import Image
+                except ImportError:
+                        print("Failed to install Pillow. Please do this manually.")
+                        sys.exit()
+        else:
+                print("Quitting")
+                sys.exit()
 
-width, height = 0,0
-
-brightness = 0
+width, height, brightness = 0,0,0
 
 def chars():
 	global file
