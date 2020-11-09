@@ -65,6 +65,7 @@ def work(bright):
 		row = 0
 		col += 1
 		file.write("\n")
+
 	print(f"Success! Outputted to {file.name}")
 	file.close()
 
@@ -75,13 +76,15 @@ def main():
 	parser.add_argument('image', help='The file to convert to ascii')
 	parser.add_argument('-o', nargs="?", help='The text file to output to.', default="output.txt", type=str, dest="output")
 	parser.add_argument("-b", nargs="?", help="How much to multiply the brightness by", default=1, type=float, dest="bright")
+	parser.add_argument("-c", nargs="?", help="Compress the image and specify new size for a smaller output (e.g -c  800,200)", type=str, dest="dimensions")
 
 	args = parser.parse_args()
 	fpath = args.image
 	output = args.output
 	brightness = args.bright
+	dimensions = args.dimensions
 
-	print("GREET TINGs!")
+
 	file = open(output,"w")
 
 	if os.path.isfile(fpath):
@@ -94,6 +97,16 @@ def main():
 	else:
 			print("Error, image does not exist")
 			sys.exit()
+	if dimensions is not None:
+                try:
+                        dims = [int(i) for i  in dimensions.split(",")]
+                        comp_width = dims[0]
+                        comp_height = dims[1]
+                except:
+                        print("Error, the dimensions specified are invalid")
+                        sys.exit()
+
+	image = image.resize((comp_width, comp_height),box=None )
 	width, height = image.size
 	work(brightness)
 
