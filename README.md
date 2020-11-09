@@ -14,5 +14,10 @@ this was written in less than 2 hours and is a mess
 - A stable mental state
 
 # Usage
-- put file name when it ask
-- If you do a large image sit back and get a cuppa because it takes a long time
+usage: ascii.py [-h] [-o [OUTPUT]] [-b [BRIGHT]] image
+(-h, -O and -b are not needed to run). If -O is not specified, ascii.py will output to output.txt
+
+Example:
+python3 ascii.py -O duck.txt duck.png
+
+Supports the vast majority of image formats
