@@ -8,12 +8,12 @@ try:
 except ImportError:
         print("Pillow needs to be installed to run this program.")
         i = input("Would you like to try and install pillow? (y/n)")
-        if i.lower() == "y" or i.lower() == "yes":
+        if i.lower() in ["y", "yes"]:
                 os.system("pip install pillow")
                 os.system("python -m pip install pillow")
                 os.system("py -m pip install pillow")
                 try:
-                        from PIL import Image
+                        from PIL import Image, ImageEnhance
                 except ImportError:
                         print("Failed to install Pillow. Please do this manually.")
                         sys.exit()
@@ -83,7 +83,6 @@ def main():
 	output = args.output
 	brightness = args.bright
 	dimensions = args.dimensions
-
 
 	file = open(output,"w")
 
