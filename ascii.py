@@ -8,12 +8,12 @@ try:
 except ImportError:
         print("Pillow needs to be installed to run this program.")
         i = input("Would you like to try and install pillow? (y/n)")
-        if i.lower() in ["y", "yes"]:
+        if i.lower() == "y" or i.lower() == "yes":
                 os.system("pip install pillow")
                 os.system("python -m pip install pillow")
                 os.system("py -m pip install pillow")
                 try:
-                        from PIL import Image, ImageEnhance
+                        from PIL import Image
                 except ImportError:
                         print("Failed to install Pillow. Please do this manually.")
                         sys.exit()
@@ -77,12 +77,14 @@ def main():
 	parser.add_argument('-o', nargs="?", help='The text file to output to.', default="output.txt", type=str, dest="output")
 	parser.add_argument("-b", nargs="?", help="How much to multiply the brightness by", default=1, type=float, dest="bright")
 	parser.add_argument("-c", nargs="?", help="Compress the image and specify new size for a smaller output (e.g -c  800,200)", type=str, dest="dimensions")
-
+	parser.add_argument("-r", nargs="?", help="Compress and keep ratio the same (Specify scale to compress by)", default=1, type=float, dest="ratio")
 	args = parser.parse_args()
 	fpath = args.image
 	output = args.output
 	brightness = args.bright
 	dimensions = args.dimensions
+	compression = args.ratio
+
 
 	file = open(output,"w")
 
@@ -104,8 +106,14 @@ def main():
                 except:
                         print("Error, the dimensions specified are invalid")
                         sys.exit()
+                if compression !=  1:
+                        print("You can't specify dimensions and compress by a ratio. Use ether just ratio (-r) or just dimensions (-c)")
+                        sys.exit()
 
-	image = image.resize((comp_width, comp_height),box=None )
+	width, height = image.size
+	comp_width = int(round(width / compression))
+	comp_height = int(round(height / compression))
+	image = image.resize((comp_width, comp_height),box=None)
 	width, height = image.size
 	work(brightness)
 
