@@ -13,7 +13,7 @@ except ImportError:
                 os.system("python -m pip install pillow")
                 os.system("py -m pip install pillow")
                 try:
-                        from PIL import Image
+                        from PIL import Image, ImageEnhance
                 except ImportError:
                         print("Failed to install Pillow. Please do this manually.")
                         sys.exit()
