@@ -2,24 +2,24 @@
 #improvements by JezzaProto
 
 import argparse, os, sys
-from math import sqrt
+from math import sqrt, floor
 try:
-        from PIL import Image, ImageEnhance
+	from PIL import Image, ImageEnhance
 except ImportError:
-        print("Pillow needs to be installed to run this program.")
-        i = input("Would you like to try and install pillow? (y/n)")
-        if i.lower() == "y" or i.lower() == "yes":
-                os.system("pip install pillow")
-                os.system("python -m pip install pillow")
-                os.system("py -m pip install pillow")
-                try:
-                        from PIL import Image, ImageEnhance
-                except ImportError:
-                        print("Failed to install Pillow. Please do this manually.")
-                        sys.exit()
-        else:
-                print("Quitting")
-                sys.exit()
+	print("Pillow needs to be installed to run this program.")
+	i = input("Would you like to try and install pillow? (y/n)")
+	if i.lower() == "y" or i.lower() == "yes":
+		os.system("pip install pillow")
+		os.system("python -m pip install pillow")
+		os.system("py -m pip install pillow")
+		try:
+			from PIL import Image, ImageEnhance
+		except ImportError:
+			print("Failed to install Pillow. Please do this manually.")
+			sys.exit()
+	else:
+		print("Quitting")
+		sys.exit()
 
 width, height, brightness = 0,0,0
 
@@ -51,17 +51,17 @@ def chars():
 		file.write(" ")
 
 def work(bright):
-	row, col = 1,1
+	row, col = 0,1
 	global brightness, image
 	if bright != 1:
 		enhancer = ImageEnhance.Brightness(image)
 		image = enhancer.enhance(bright)
-	for x in range(1, height):
+	for _ in range(1, height):
 		while row < width -1:
-				row += 1
-				r, g, b = image.getpixel((row, col))
-				brightness = sqrt(0.241*(r**2) + 0.691*(g**2) + 0.068*(b**2))
-				chars()
+			row += 1
+			r, g, b = image.getpixel((row, col))
+			brightness = sqrt(0.241*(r**2) + 0.691*(g**2) + 0.068*(b**2))
+			chars()
 		row = 0
 		col += 1
 		file.write("\n")
@@ -78,13 +78,15 @@ def main():
 	parser.add_argument("-b", nargs="?", help="How much to multiply the brightness by", default=1, type=float, dest="bright")
 	parser.add_argument("-c", nargs="?", help="Compress the image and specify new size for a smaller output (e.g -c  800,200)", type=str, dest="dimensions")
 	parser.add_argument("-r", nargs="?", help="Compress and keep ratio the same (Specify scale to compress by)", default=1, type=float, dest="ratio")
+	parser.add_argument("-m", nargs="?", help="Max number of characters that the output can have (Auto-scaling)", default=1, type=int, dest="chars")
+  
 	args = parser.parse_args()
 	fpath = args.image
 	output = args.output
 	brightness = args.bright
 	dimensions = args.dimensions
 	compression = args.ratio
-
+	chars = args.chars
 
 	file = open(output,"w")
 
@@ -96,19 +98,38 @@ def main():
 			print("The file specified could not be opened as an image")
 			sys.exit()
 	else:
-			print("Error, image does not exist")
-			sys.exit()
+		print("Error, image does not exist")
+		sys.exit()
 	if dimensions is not None:
-                try:
-                        dims = [int(i) for i  in dimensions.split(",")]
-                        comp_width = dims[0]
-                        comp_height = dims[1]
-                except:
-                        print("Error, the dimensions specified are invalid")
-                        sys.exit()
-                if compression !=  1:
-                        print("You can't specify dimensions and compress by a ratio. Use ether just ratio (-r) or just dimensions (-c)")
-                        sys.exit()
+		if compression != 1:
+			print("You can't specify dimensions and compress by a ratio. Use ether just ratio (-r) or just dimensions (-c)")
+			sys.exit()
+		if chars != 1:
+			print("You can't specify dimensions and use auto-scaling. Use ether just ratio (-r) or just auto-scaling (-m)")
+			sys.exit()
+		try:
+			dims = [int(i) for i  in dimensions.split(",")]
+			comp_width = dims[0]
+			comp_height = dims[1]
+		except:
+			print("Error, the dimensions specified are invalid")
+			sys.exit()
+	
+	if chars != 1:
+		if compression != 1:
+			print("You can't specify auto-scaling and compress by a ratio. Use ether just auto-scaling (-m) or just a ratio (-r)")
+			sys.exit()
+		width, height = image.size
+		image_size = width * height
+		while image_size >= chars:
+			width *= 0.95
+			height *= 0.95
+			image_size = width * height
+		width = floor(width)
+		height = floor(height)
+		image = image.resize((width, height),box=None)
+		work(brightness)
+		sys.exit()
 
 	width, height = image.size
 	comp_width = int(round(width / compression))
