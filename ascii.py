@@ -79,6 +79,7 @@ def main():
 	parser.add_argument("-c", nargs="?", help="Compress the image and specify new size for a smaller output (e.g -c  800,200)", type=str, dest="dimensions")
 	parser.add_argument("-r", nargs="?", help="Compress and keep ratio the same (Specify scale to compress by)", default=1, type=float, dest="ratio")
 	parser.add_argument("-m", nargs="?", help="Max number of characters that the output can have (Auto-scaling)", default=1, type=int, dest="chars")
+  
 	args = parser.parse_args()
 	fpath = args.image
 	output = args.output
