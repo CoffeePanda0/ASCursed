@@ -62,6 +62,7 @@ def work(bright):
 			r, g, b = image.getpixel((row, col))
 			brightness = sqrt(0.241*(r**2) + 0.691*(g**2) + 0.068*(b**2))
 			chars()
+			chars()
 		row = 0
 		col += 1
 		file.write("\n")
@@ -74,12 +75,11 @@ def main():
 
 	parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 	parser.add_argument('image', help='The file to convert to ascii')
-	parser.add_argument('-o', nargs="?", help='The text file to output to.', default="output.txt", type=str, dest="output")
+	parser.add_argument('-o', nargs="?", help='The text file to output to.', default="none", type=str, dest="output")
 	parser.add_argument("-b", nargs="?", help="How much to multiply the brightness by", default=1, type=float, dest="bright")
 	parser.add_argument("-c", nargs="?", help="Compress the image and specify new size for a smaller output (e.g -c  800,200)", type=str, dest="dimensions")
 	parser.add_argument("-r", nargs="?", help="Compress and keep ratio the same (Specify scale to compress by)", default=1, type=float, dest="ratio")
 	parser.add_argument("-m", nargs="?", help="Max number of characters that the output can have (Auto-scaling)", default=1, type=int, dest="chars")
-  
 	args = parser.parse_args()
 	fpath = args.image
 	output = args.output
@@ -87,6 +87,12 @@ def main():
 	dimensions = args.dimensions
 	compression = args.ratio
 	chars = args.chars
+    
+	if output == "none":
+		output = fpath.split(os.path.sep)[-1]
+		output = output.split(".")[0:-1]
+		output = ".".join(output)
+		output += ".txt"
 
 	file = open(output,"w")
 
@@ -120,11 +126,11 @@ def main():
 			print("You can't specify auto-scaling and compress by a ratio. Use ether just auto-scaling (-m) or just a ratio (-r)")
 			sys.exit()
 		width, height = image.size
-		image_size = width * height
+		image_size = (width*2) * height
 		while image_size >= chars:
-			width *= 0.95
-			height *= 0.95
-			image_size = width * height
+			width *= 0.99
+			height *= 0.99
+			image_size = (width*2) * height
 		width = floor(width)
 		height = floor(height)
 		image = image.resize((width, height),box=None)
