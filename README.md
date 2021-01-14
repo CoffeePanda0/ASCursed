@@ -14,12 +14,13 @@ this was written in less than 2 hours and is a mess
 - A stable mental state
 
 # Usage
-usage: ascii.py [-h] [-o [OUTPUT]] [-b [BRIGHT]] [-c [COMPRESSION]] [-r [RATIO]] image  
-(-h, -O, -c, -r and -b are not needed to run). If -O is not specified, ascii.py will output to output.txt  
+usage: ascii.py [-h] [-o [OUTPUT]] [-b [BRIGHT]] [-c [COMPRESSION]] [-r [RATIO]] [-m [MAX CHARS]] [-t [TEXT]] image  
+(-h, -o, -c, -r, -m, -t and -b are not needed to run). If -o is not specified, ascii.py will output to the file name + .txt
 With -c specify the new width and height for the output (e.g -c 1920,1080)  
 With -r specify the ratio (e.g -r 5) makes the image 5 times smaller with the same height:width ratio as before
+With -m specify the max number of characters
 
 Example:
-python3 ascii.py -O duck.txt duck.png
+python3 ascii.py -o duck.txt duck.png
 
 Supports the vast majority of image formats
